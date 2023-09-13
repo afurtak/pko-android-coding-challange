@@ -109,17 +109,17 @@ class MovieListFragment : Fragment() {
 
             view.updatePadding(insets.left, 0, insets.right, 0)
 
+            val fabLayoutParams = (binding.fab.layoutParams as ConstraintLayout.LayoutParams).also {
+                it.bottomMargin = insets.bottom + 32
+            }
+            binding.fab.layoutParams = fabLayoutParams
+
             binding.movieListRecyclerView.updatePadding(
                 left = insets.left,
                 top = insets.top,
                 right = insets.right,
                 bottom = insets.bottom + binding.fab.marginBottom + binding.fab.height,
             )
-
-            val fabLayoutParams = (binding.fab.layoutParams as ConstraintLayout.LayoutParams).also {
-                it.bottomMargin = insets.bottom + binding.fab.marginBottom
-            }
-            binding.fab.layoutParams = fabLayoutParams
 
             WindowInsetsCompat.CONSUMED
         }
