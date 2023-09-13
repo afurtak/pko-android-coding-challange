@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/movie_detail_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="36dp">
+
+            <ImageView
+                android:id="@+id/poster"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:importantForAccessibility="no"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@id/poster" />
+
+            <TextView
+                android:id="@+id/tagline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tagline" />
+
+            <View
+                android:id="@+id/divider1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="#aaaaaa"
+                app:layout_constraintTop_toBottomOf="@id/release_date" />
+
+            <TextView
+                android:id="@+id/overview_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/overview"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/divider1" />
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@id/overview_label" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="#aaaaaa"
+                app:layout_constraintTop_toBottomOf="@id/overview" />
+
+            <TextView
+                android:id="@+id/rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/rating"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+            <TextView
+                android:id="@+id/total_votes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/total_votes"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/rating"
+                app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="12dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/baseline_favorite_border_24"
+                app:layout_constraintBottom_toBottomOf="@id/total_votes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/total_votes"
+                app:layout_constraintTop_toTopOf="@id/total_votes"
+                app:tint="#ff7aa0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

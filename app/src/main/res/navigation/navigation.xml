@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/asd"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="com.furtak.movielist.list.MovieListFragment"
+        android:label="MovieListFragment" >
+        <action
+            android:id="@+id/action_movieListFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="com.furtak.movielist.detail.MovieDetailFragment"
+        android:label="MovieDetailFragment" />
+
+</navigation>
