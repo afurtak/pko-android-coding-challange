@@ -33,6 +33,23 @@ class MovieRepository(
         )
     }
 
+    suspend fun searchMovies(page: Int, searchPhrase: String): MoviesPage {
+        val response = moviesRemoteService.searchMovies(page, searchPhrase)
+
+        val movies = response.results.map { dto ->
+            Movie(
+                id = dto.id,
+                title = dto.title,
+                thumbnailDownloadPath = THUMBNAIL_DOWNLOAD_PATH_TEMPLATE.format(dto.posterPath ?: dto.backdropPath),
+            )
+        }
+
+        return MoviesPage(
+            results = movies,
+            lastPage = response.page == response.totalPages,
+        )
+    }
+
     suspend fun getMovieDetails(movieId: Int): Flow<MovieDetails> {
         val dto = moviesRemoteService.getMovieDetails(movieId)
 

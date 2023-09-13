@@ -11,11 +11,22 @@
         <action
             android:id="@+id/action_movieListFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_movieListFragment_to_movieSearchFragment"
+            app:destination="@id/movieSearchFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.furtak.movielist.detail.MovieDetailFragment"
         android:label="MovieDetailFragment" />
+    <fragment
+        android:id="@+id/movieSearchFragment"
+        android:name="com.furtak.movielist.search.MovieSearchFragment"
+        android:label="MovieSearchFragment" >
+        <action
+            android:id="@+id/action_movieSearchFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
 
 </navigation>

@@ -1,16 +1,15 @@
-package com.furtak.movielist.list
+package com.furtak.movielist.search
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginBottom
 import androidx.core.view.updatePadding
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,25 +19,26 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.furtak.movielist.R
-import com.furtak.movielist.databinding.MovieListFragmentBinding
+import com.furtak.movielist.databinding.MovieSearchFragmentBinding
 import com.furtak.movielist.detail.MovieDetailFragment
+import com.furtak.movielist.list.MovieListAdapter
 import kotlinx.coroutines.launch
 
-class MovieListFragment : Fragment() {
-    private var _binding: MovieListFragmentBinding? = null
-    private val binding: MovieListFragmentBinding get() = _binding!!
+class MovieSearchFragment : Fragment() {
+    private var _binding: MovieSearchFragmentBinding? = null
+    private val binding: MovieSearchFragmentBinding get() = _binding!!
 
     private var _movieListAdapter: MovieListAdapter? = null
     private val movieListAdapter: MovieListAdapter get() = _movieListAdapter!!
 
-    private val viewModel: MovieListViewModel by viewModels()
+    private val viewModel: MovieSearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MovieListFragmentBinding.inflate(inflater, container, false)
+        _binding = MovieSearchFragmentBinding.inflate(inflater, container, false)
 
         setupMovieListAdapter()
         setupEdgeToEdgeView()
@@ -47,10 +47,6 @@ class MovieListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_movieListFragment_to_movieSearchFragment)
-        }
-
         binding.movieListRecyclerView.also { movieList ->
             movieList.adapter = movieListAdapter
             movieList.layoutManager = LinearLayoutManager(requireContext())
@@ -60,10 +56,20 @@ class MovieListFragment : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.loadMoreMovies()
+                    viewModel.searchMoreMovies()
                 }
             }
         })
+
+        binding.searchView.doOnTextChanged { text, _, _, _ ->
+            if (text == null) return@doOnTextChanged
+
+            if (text.isBlank()) {
+                viewModel.clearSearchResults()
+            } else {
+                viewModel.search(text.toString())
+            }
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -107,27 +113,22 @@ class MovieListFragment : Fragment() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemGestures())
 
-            view.updatePadding(insets.left, 0, insets.right, 0)
-
+            view.updatePadding(insets.left, insets.top, insets.right, 0)
             binding.movieListRecyclerView.updatePadding(
                 left = insets.left,
-                top = insets.top,
+                top = 0,
                 right = insets.right,
-                bottom = insets.bottom + binding.fab.marginBottom + binding.fab.height,
+                bottom = insets.bottom,
             )
-
-            val fabLayoutParams = (binding.fab.layoutParams as ConstraintLayout.LayoutParams).also {
-                it.bottomMargin = insets.bottom + binding.fab.marginBottom
-            }
-            binding.fab.layoutParams = fabLayoutParams
 
             WindowInsetsCompat.CONSUMED
         }
     }
 
+
     private fun navigateToDetails(movieId: Int) {
         findNavController().navigate(
-            R.id.action_movieListFragment_to_movieDetailFragment,
+            R.id.action_movieSearchFragment_to_movieDetailFragment,
             bundleOf(MovieDetailFragment.MOVIE_ID to movieId),
         )
     }
