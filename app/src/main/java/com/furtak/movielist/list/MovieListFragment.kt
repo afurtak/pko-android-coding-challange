@@ -25,11 +25,8 @@ import com.furtak.movielist.detail.MovieDetailFragment
 import kotlinx.coroutines.launch
 
 class MovieListFragment : Fragment() {
-    private var _binding: MovieListFragmentBinding? = null
-    private val binding: MovieListFragmentBinding get() = _binding!!
-
-    private var _movieListAdapter: MovieListAdapter? = null
-    private val movieListAdapter: MovieListAdapter get() = _movieListAdapter!!
+    private lateinit var binding: MovieListFragmentBinding
+    private lateinit var movieListAdapter: MovieListAdapter
 
     private val viewModel: MovieListViewModel by viewModels()
 
@@ -38,12 +35,12 @@ class MovieListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MovieListFragmentBinding.inflate(inflater, container, false)
+        binding = MovieListFragmentBinding.inflate(inflater, container, false)
 
         setupMovieListAdapter()
         setupEdgeToEdgeView()
 
-        return _binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,12 +67,10 @@ class MovieListFragment : Fragment() {
                 viewModel.movies.collect { (movies, _) ->
                     movieListAdapter.invalidateMovies(movies)
                 }
-            }
-        }
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.favorites.collect(movieListAdapter::updateFavorites)
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    viewModel.favorites.collect(movieListAdapter::updateFavorites)
+                }
             }
         }
 
@@ -90,12 +85,10 @@ class MovieListFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _movieListAdapter = null
-        _binding = null
     }
 
     private fun setupMovieListAdapter() {
-        _movieListAdapter = MovieListAdapter(
+        movieListAdapter = MovieListAdapter(
             movies = mutableListOf(),
             favorites = setOf(),
             goToDetails = ::navigateToDetails,
